@@ -3,7 +3,7 @@
     package="com.donson.xxxiugaiqi"              
     android:persistent="true"
     android:versionCode="1"
-    android:versionName="1.9.3" >
+    android:versionName="1.9.4" >
 
     <!-- sharedUserId="Android.uid.system" -->
     <uses-sdk
@@ -148,6 +148,8 @@
        <activity android:name="com.donson.myhook.WebViewActivity"
             android:taskAffinity="@string/task_other"></activity>
        <activity android:name="com.donson.myhook.DeleteLogActivity"
+           android:taskAffinity="@string/task_other"></activity>
+       <activity android:name="com.donson.myhook.LiuCunAllTableActivity"
            android:taskAffinity="@string/task_other"></activity>
 
         <receiver android:name="com.donson.myhook.services.InstallBroadcast" >

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+ <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/liucun_recode"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/activity_big_padding"
+            android:background="@drawable/conner_gray_bg"
+            android:padding="@dimen/tv_padding" >
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/tv_padding"
+                    android:text="@string/tv_liucun_title"
+                    android:textSize="@dimen/text_size" />
+            </TableRow>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey2" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" >
+
+                <TextView
+                    style="@style/tv_weight_1"
+                    android:text="@string/tv_liucun_1" />
+
+                <EditText
+                    android:id="@+id/et_liucun_1"
+                    style="@style/tv_weight_1"
+                    android:maxLength="5"
+                    android:numeric="decimal" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/grey2" />
+
+                <TextView
+                    style="@style/tv_weight_1"
+                    android:text="@string/tv_liucun_6" />
+
+                <EditText
+                    android:id="@+id/et_liucun_6"
+                    style="@style/tv_weight_1"
+                    android:maxLength="5"
+                    android:numeric="decimal" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" >
+
+                <TextView
+                    style="@style/tv_weight_1"
+                    android:text="@string/tv_liucun_2" />
+
+                <EditText
+                    android:id="@+id/et_liucun_2"
+                    style="@style/tv_weight_1"
+                    android:maxLength="5"
+                    android:numeric="decimal" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/grey2" />
+
+                <TextView
+                    style="@style/tv_weight_1"
+                    android:text="@string/tv_liucun_7" />
+
+                <EditText
+                    android:id="@+id/et_liucun_7"
+                    style="@style/tv_weight_1"
+                    android:maxLength="5"
+                    android:numeric="decimal" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" >
+
+                <TextView
+                    style="@style/tv_weight_1"
+                    android:text="@string/tv_liucun_3" />
+
+                <EditText
+                    android:id="@+id/et_liucun_3"
+                    style="@style/tv_weight_1"
+                    android:maxLength="5"
+                    android:numeric="decimal" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/grey2" />
+
+                <TextView
+                    style="@style/tv_weight_1"
+                    android:text="@string/tv_liucun_8" />
+
+                <EditText
+                    android:id="@+id/et_liucun_8"
+                    style="@style/tv_weight_1"
+                    android:maxLength="5"
+                    android:numeric="decimal" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" >
+
+                <TextView
+                    style="@style/tv_weight_1"
+                    android:text="@string/tv_liucun_4" />
+
+                <EditText
+                    android:id="@+id/et_liucun_4"
+                    style="@style/tv_weight_1"
+                    android:maxLength="5"
+                    android:numeric="decimal" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/grey2" />
+
+                <TextView
+                    style="@style/tv_weight_1"
+                    android:text="@string/tv_liucun_9" />
+
+                <EditText
+                    android:id="@+id/et_liucun_9"
+                    style="@style/tv_weight_1"
+                    android:maxLength="5"
+                    android:numeric="decimal" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" >
+
+                <TextView
+                    style="@style/tv_weight_1"
+                    android:text="@string/tv_liucun_5" />
+
+                <EditText
+                    android:id="@+id/et_liucun_5"
+                    style="@style/tv_weight_1"
+                    android:maxLength="5"
+                    android:numeric="decimal" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:background="@color/grey2" />
+
+                <TextView style="@style/tv_weight_1" />
+
+                <TextView style="@style/tv_weight_1" >
+                </TextView>
+            </TableRow>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey2" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/btn_cancel"
+                    style="@style/tv_weight_1"
+                    android:padding="@dimen/tv_padding"
+                    android:text="@string/btn_cancel"
+                    android:textColor="@color/press_text"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/btn_ok"
+                    style="@style/tv_weight_1"
+                    android:padding="@dimen/tv_padding"
+                    android:text="@string/btn_ok"
+                    android:textColor="@color/press_text" />
+            </TableRow>
+        </TableLayout>
+</merge>

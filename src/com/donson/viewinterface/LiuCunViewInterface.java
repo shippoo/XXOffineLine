@@ -11,4 +11,5 @@ public interface LiuCunViewInterface {
 	public void notifySpinnerDelete(String packageName);
 	public void setLiuCunDataText(int all,int liucun);
 	public void setTotalCountText(int total);
+	public void setTvLiucunDataRunNumTips(int remain);
 }

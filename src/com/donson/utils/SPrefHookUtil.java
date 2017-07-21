@@ -21,8 +21,13 @@ public class SPrefHookUtil {
 	public static String KEY_HHOOK_PACKAGE_NAME = "key_hhook_package_name"; //监听 安装包
 	public static final String KEY_SETTING_CHANG_WHITE_LIST = "key_change_white_list"; //
 	public static final String FLAG_SETTING_CLOSE_WHITE_LIST = "key_close_white_list";//
-	public static final String KEY_SETTING_CHANNEL = "key_cur_donson_xx_channel";
 	
+	
+	/**
+	 * 是否保存数据到本地数据库
+	 */
+	public static final String KEY_SETTING_SAVE_OFFLINE_PARAM = "key_donson_xx_save_offline_param";
+	public static final boolean D_SETTING_SAVE_OFFLINE_PARAM = false;
 	
 	public static final String KEY_SETTING_COMMON_LUA = "key_common_lua_ver";
 	public static final String D_COMMON_LUA = "-1";
@@ -38,7 +43,7 @@ public class SPrefHookUtil {
 	public static final int D_SETTING_FILE_FLAG_CLEAR_ALL_APK_SCRIPT = 3;
 	public static final int D_SETTING_FILE_FLAG_CLEAR_DELEAD_FILE = 4;
 	
-	public static final String KEY_SETTING_WIFI_STATE = "key_wifi_state";//
+	public static final String KEY_SETTING_NET_TYPE = "key_net_type";//
 	
 	public static final String KEY_SETTING_DOWN_PACKAGE_NAME = "key_donson_down_package_name";
 	
@@ -135,7 +140,7 @@ public class SPrefHookUtil {
 	public static final int D_TASK_PLAN_TYPE= 1; 
 	public static final int D_TASK_PLAN_TYPE_NEW= 1; 
 	public static final int D_TASK_PLAN_TYPE_RETAIN= 2; 
-	
+	 
 	public static final String KEY_TASK_VPN_AUTO_CONN = "key_vpn_auto_conn"; 
 	public static final boolean D_TASK_VPN_AUTO_CONN = true; 
 	
@@ -154,6 +159,10 @@ public class SPrefHookUtil {
 	
 	public static final String KEY_TASK_SCRIPT_NAME = "key_task_script_name";
 	public static final String D_TASK_SCRIPT_NAME = "0";
+	
+	
+	public static final String KEY_TASK_CUR_RUN_ID = "key_task_cur_run_id";
+	public static final int D_TASK_CUR_RUN_ID = -1;
 	/****************************************************************************************************************/
 	public static final String SP_CUR_TASK = "sp_cur_task";
 	public static String KEY_CUR_PACKAGE_NAME = "key_cur_package_name"; //监听 安装包

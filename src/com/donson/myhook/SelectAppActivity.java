@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,15 +26,18 @@ import com.donson.myhook.bean.AppInfosMode;
 import com.donson.utils.AppInfosUtil;
 import com.donson.utils.SPrefHookUtil;
 import com.donson.utils.SendBroadCastUtil;
+import com.donson.utils.UtilsDialog;
 import com.donson.xxxiugaiqi.R;
+import com.param.config.SPrefUtil;
 
 public class SelectAppActivity extends BaseActivity {
 	private ListView lv_list;
-	public ArrayList<AppInfosMode> mAppList;
+	private ArrayList<AppInfosMode> mAppList;
 	private AppInfosAdapter mSelectAppAdapter;
-	public PackageManager mPm;
-	Button btn_clear,btnChannel;
+	private PackageManager mPm;
+	private Button btn_clear,btnChannel;
 	private String packageName;
+	private String channel ;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,8 @@ public class SelectAppActivity extends BaseActivity {
 		packageName = SPrefHookUtil.getSettingStr(SelectAppActivity.this, SPrefHookUtil.KEY_HHOOK_PACKAGE_NAME);
 		if (TextUtils.isEmpty(packageName))
 			btn_clear.setVisibility(View.GONE);
+		channel = SPrefUtil.getString(SelectAppActivity.this, SPrefUtil.C_CHANNEL,SPrefUtil.D_CHANNEL);
+		btnChannel.setText(String.format(getString(R.string.set_cur_channel), channel));
 	}
 	
 	private void setListner() {
@@ -57,23 +63,45 @@ public class SelectAppActivity extends BaseActivity {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				AppInfosMode packageInfoMode = mAppList.get(position);
 				showDialog(packageInfoMode);
+				
 			}
 		});
 		btn_clear.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				showClearListnerDialog();
+//				showClearListnerDialog();
+				UtilsDialog.showTipsDialog(SelectAppActivity.this,getString(R.string.please_affirm_clear_listen_app)
+						,"", new UtilsDialog.DialogOptListener() {
+							
+							@Override
+							public void onBack(EditText et) {
+								boolean commit = SPrefHookUtil.putSettingStr(SelectAppActivity.this, SPrefHookUtil.KEY_HHOOK_PACKAGE_NAME,"");
+								SPrefHookUtil.putCurTaskStr(SelectAppActivity.this, SPrefHookUtil.KEY_CUR_PACKAGE_NAME,"");
+								if (commit) {
+									SendBroadCastUtil.listenApp(/*ConstantsHookConfig.FLAG_CLEAR_LISTNER_APP,*/ SelectAppActivity.this,false);
+									finish();
+								} else {
+									showToast(getResources().getString(R.string.opera_fail));
+								}
+							}
+						});
 			}
 		});
 		btnChannel.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
+				UtilsDialog.showChangTextDialog(SelectAppActivity.this, channel, getString(R.string.change_cur_channel), "", "", new UtilsDialog.DialogOptListener() {
+					
+					@Override
+					public void onBack(EditText et) {
+						SPrefUtil.putString(SelectAppActivity.this, SPrefUtil.C_CHANNEL, et.getText()==null?"":et.getText().toString());
+						btnChannel.setText(String.format(getString(R.string.set_cur_channel), et.getText()==null?"":et.getText().toString()));
+					}
+				});
 			}
-		})
+		});
 
 	}
 
@@ -109,7 +137,6 @@ public class SelectAppActivity extends BaseActivity {
 				} else {
 					showToast(getResources().getString(R.string.opera_fail));
 				}
-
 			}
 		});
 		dialog.setButton(DialogInterface.BUTTON_NEGATIVE,getString(R.string.btn_cancel), new OnClickListener() {
@@ -126,35 +153,35 @@ public class SelectAppActivity extends BaseActivity {
 
 	AlertDialog dialog2;
 
-	protected void showClearListnerDialog() {
-		Builder builder2 = new AlertDialog.Builder(SelectAppActivity.this, AlertDialog.THEME_HOLO_LIGHT);
-		dialog2 = builder2.create();
-		dialog2.setTitle(getResources().getString(R.string.please_affirm_clear_listen_app));
-		dialog2.setButton(DialogInterface.BUTTON_POSITIVE, getResources().getString(R.string.affirm),
-				new OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						boolean commit = SPrefHookUtil.putSettingStr(SelectAppActivity.this, SPrefHookUtil.KEY_HHOOK_PACKAGE_NAME,"");
-						SPrefHookUtil.putCurTaskStr(SelectAppActivity.this, SPrefHookUtil.KEY_CUR_PACKAGE_NAME,"");
-						if (commit) {
-							SendBroadCastUtil.listenApp(/*ConstantsHookConfig.FLAG_CLEAR_LISTNER_APP,*/ SelectAppActivity.this,false);
-							finish();
-						} else {
-							showToast(getResources().getString(R.string.opera_fail));
-						}
-					}
-				});
-		dialog2.setButton(DialogInterface.BUTTON_NEGATIVE, getResources().getString(R.string.cancel),
-				new OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-
-					}
-				});
-		dialog2.show();
-	}
+//	protected void showClearListnerDialog() {
+//		Builder builder2 = new AlertDialog.Builder(SelectAppActivity.this, AlertDialog.THEME_HOLO_LIGHT);
+//		dialog2 = builder2.create();
+//		dialog2.setTitle(getResources().getString(R.string.please_affirm_clear_listen_app));
+//		dialog2.setButton(DialogInterface.BUTTON_POSITIVE, getResources().getString(R.string.affirm),
+//				new OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						boolean commit = SPrefHookUtil.putSettingStr(SelectAppActivity.this, SPrefHookUtil.KEY_HHOOK_PACKAGE_NAME,"");
+//						SPrefHookUtil.putCurTaskStr(SelectAppActivity.this, SPrefHookUtil.KEY_CUR_PACKAGE_NAME,"");
+//						if (commit) {
+//							SendBroadCastUtil.listenApp(/*ConstantsHookConfig.FLAG_CLEAR_LISTNER_APP,*/ SelectAppActivity.this,false);
+//							finish();
+//						} else {
+//							showToast(getResources().getString(R.string.opera_fail));
+//						}
+//					}
+//				});
+//		dialog2.setButton(DialogInterface.BUTTON_NEGATIVE, getResources().getString(R.string.cancel),
+//				new OnClickListener() {
+//
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//
+//					}
+//				});
+//		dialog2.show();
+//	}
 
 	public static View getAppInfoView(AppInfosMode packageInfoMode, PackageManager mPm, Context context) {
 		CharSequence name = AppInfosAdapter.getName(packageInfoMode, mPm);

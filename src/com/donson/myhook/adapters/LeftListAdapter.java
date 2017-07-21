@@ -108,6 +108,11 @@ public class LeftListAdapter extends BaseAdapter {
 			holder.checkBox.setVisibility(View.VISIBLE);
 			holder.checkBox.setChecked(SPrefUtil.getBool(context, SPrefUtil.C_CONTACT_CHANGE, SPrefUtil.D_CONTACT_CHANGE));
 			break;
+		case LeftListController.INSERT_OFFLINE_PARAM:
+			holder.checkBox.setVisibility(View.VISIBLE);
+			holder.checkBox.setChecked(SPrefHookUtil.getSettingBoolean(context, SPrefHookUtil.KEY_SETTING_SAVE_OFFLINE_PARAM,
+					SPrefHookUtil.D_SETTING_SAVE_OFFLINE_PARAM));
+			break;
 		default:
 			holder.checkBox.setVisibility(View.INVISIBLE);
 			break;

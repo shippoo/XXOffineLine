@@ -24,6 +24,7 @@ import com.donson.myhook.bean.DataMode;
 import com.donson.myhook.services.ListenService;
 import com.donson.myhook.services.MyInternetService;
 import com.donson.utils.ActivityUtil;
+import com.donson.utils.CommonSprUtil;
 import com.donson.utils.EasyClickUtil;
 import com.donson.utils.OpenActivityUtil;
 import com.donson.utils.SPrefHookUtil;
@@ -33,7 +34,9 @@ import com.donson.viewinterface.MainViewInterface;
 import com.donson.widget.MyListView;
 import com.donson.xxxiugaiqi.R;
 import com.donson.zhushoubase.BaseApplication;
+import com.param.bean.LiuCunMode;
 import com.param.config.ConstantsConfig;
+import com.param.dao.DbDao;
 import com.param.utils.FileUtil;
 
 public class MainActivity extends BaseActivity implements MainViewInterface,
@@ -64,11 +67,16 @@ public class MainActivity extends BaseActivity implements MainViewInterface,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		CheckPermission();
+		DbDao dao = DbDao.getInstance(this);
+//		String packageName = CommonSprUtil.getListenPackageName(this);
+//		String channel = CommonSprUtil.getCurChannel(this);
+//		LiuCunMode mode = dao.getLiuCunSetByPackageName(packageName, channel);
+//		System.out.println("model::"+mode.toString());
+		
 		EasyClickUtil.setMarketHookFlag(MainActivity.this,false);
-		SPrefHookUtil.putSettingBoolean(MainActivity.this, SPrefHookUtil.KEY_SETTING_NET_DEBUG, true);
+//		SPrefHookUtil.putSettingBoolean(MainActivity.this, SPrefHookUtil.KEY_SETTING_NET_DEBUG, true);
 		SPrefHookUtil.putSettingBoolean(MainActivity.this, SPrefHookUtil.KEY_SETTING_IS_RUN_SCRIPT, true);
 		SPrefHookUtil.putSettingBoolean(MainActivity.this, SPrefHookUtil.KEY_SETTING_UNINSTALL_APK, false);
-		SPrefHookUtil.putSettingStr(MainActivity.this, SPrefHookUtil.KEY_HHOOK_PACKAGE_NAME,"");// 不要
 		app = (BaseApplication) getApplication();
 		if (!app.getIsRunning()) {
 			EasyClickUtil.setIsTaskRunning(getApplicationContext(),
@@ -99,6 +107,7 @@ public class MainActivity extends BaseActivity implements MainViewInterface,
 			}
 		}).start();
 
+//		DbDao.getInstance(this).getTables();
 		controller = new MainViewController(this, this);
 		
 		String deviceId = SPrefHookUtil.getLoginStr(this,SPrefHookUtil.KEY_LOGIN_DEVICE_ID);
@@ -159,7 +168,7 @@ public class MainActivity extends BaseActivity implements MainViewInterface,
 	public void initRect() {
 		initTopBar();
 		if(ConstantsHookConfig.IS_MOBILE){
-			setTopTitle(getString(R.string.title_main));
+			setTopTitle(getString(R.string.title_main_offline));
 		}else {
 			setTopTitle(getString(R.string.title_main_pc));
 			

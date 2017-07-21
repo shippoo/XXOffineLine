@@ -28,7 +28,9 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Color;
 import android.os.Looper;
+import android.print.PageRange;
 import android.text.TextUtils;
 
 import com.donson.config.ConstantsHookConfig;
@@ -45,6 +47,7 @@ import com.donson.operation.VpnConnectOperation;
 import com.donson.utils.ActivityUtil;
 import com.donson.utils.AppInfosUtil;
 import com.donson.utils.CmdUtil;
+import com.donson.utils.CommonSprUtil;
 import com.donson.utils.EasyClickUtil;
 import com.donson.utils.MyfileUtil;
 import com.donson.utils.OpenActivityUtil;
@@ -62,7 +65,9 @@ import com.param.bean.ParamEntity;
 import com.param.config.ConstantsConfig;
 import com.param.config.SPrefUtil;
 import com.param.controller.MyParamInterface;
+import com.param.dao.DbDao;
 import com.param.netInterface.HttpUtil.ResponseListener;
+import com.param.utils.BroadcastUtil;
 import com.param.utils.CommonOperationUtil;
 import com.param.utils.FileUtil;
 import com.param.utils.MD5Util;
@@ -643,8 +648,45 @@ public class AutoOptViewController {
 						interface1.getParam(getListenPackageName(),false);
 					}else {
 						SPrefHookUtil.putSettingBoolean(mActivity, SPrefHookUtil.KEY_SETTING_CURRENT_IS_NEW, false);
-						HttpUtil2 util2 =new HttpUtil2(mActivity);
-						util2.getLiuCunParam();
+//						HttpUtil2 util2 =new HttpUtil2(mActivity);
+//						util2.getLiuCunParam();
+						DbDao dao = DbDao.getInstance(mActivity);
+						
+						int id = SPrefHookUtil.getCurTaskInt(mActivity, SPrefHookUtil.KEY_TASK_CUR_RUN_ID, SPrefHookUtil.D_TASK_CUR_RUN_ID);
+						if(id!=-1){
+							ParamEntity paramEntity = dao.getParamById(CommonSprUtil.getListenPackageName(mActivity),CommonSprUtil.getCurChannel(mActivity), id);
+							if(paramEntity!=null){
+								viewInterface.toastBig(String.format(mActivity.getString(R.string.auto_generate_id_param), id));
+								SPrefHookUtil.putCurTaskInt(mActivity, SPrefHookUtil.KEY_TASK_CUR_RUN_ID, -1);
+								BroadcastUtil.saveParamToFileBroadcast(mActivity, false, false, paramEntity);
+								
+							}else {
+								viewInterface.toastBig(mActivity.getString(R.string.auto_generate_id_param_err),Color.RED);
+								EasyClickUtil.setIsTaskRunning(mActivity,EasyClickUtil.TASK_NOT_RUNNING);
+								app.setIsRunning(false);
+								Logger.i("--isRunning-auto -"+ EasyClickUtil.getIsTaskRunning(mActivity));
+								mActivity.finish();
+								mActivity.overridePendingTransition(
+										R.anim.slide_left_in,
+										R.anim.slide_right_out);
+							}
+						}else {
+							ParamEntity paramEntity = dao.getRetainParam(CommonSprUtil.getListenPackageName(mActivity),CommonSprUtil.getCurChannel(mActivity));
+							
+							if(paramEntity!=null){
+								BroadcastUtil.saveParamToFileBroadcast(mActivity, false, false, paramEntity);
+							}else {
+//								SendBroadCastUtil.
+								viewInterface.toastBig(mActivity.getString(R.string.auto_get_retain_param_err));
+								EasyClickUtil.setIsTaskRunning(mActivity,EasyClickUtil.TASK_NOT_RUNNING);
+								app.setIsRunning(false);
+								Logger.i("--isRunning-auto -"+ EasyClickUtil.getIsTaskRunning(mActivity));
+								mActivity.finish();
+								mActivity.overridePendingTransition(
+										R.anim.slide_left_in,
+										R.anim.slide_right_out);
+							}
+						}
 					}
 				}
 			});
@@ -800,6 +842,10 @@ public class AutoOptViewController {
 	public final static int VPNERR = 0;
 	public final static int VPNOK = 1;
 	public void vpnstatus(final int status){
+		boolean netDebug = SPrefHookUtil.getSettingBoolean(mActivity,SPrefHookUtil.KEY_SETTING_NET_DEBUG,SPrefHookUtil.D_SETTING_NET_DEBUG);
+		if(!netDebug){
+			return;
+		}
 		mActivity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {

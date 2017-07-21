@@ -111,7 +111,7 @@ public class ScriptService extends Service {
 				if(!is){
 					return;
 				}
-				int wifistate = SPrefHookUtil.getSettingInt(getApplicationContext(), SPrefHookUtil.KEY_SETTING_WIFI_STATE,3);
+				int wifistate = SPrefHookUtil.getSettingInt(getApplicationContext(), SPrefHookUtil.KEY_SETTING_NET_TYPE,1);//1 wifi  0mobile
 				System.out.println("come here ......" + sourcePath+"  wifistate："+wifistate);
 				// 参数
 				HashMap<Object, Object> args = new HashMap<Object, Object>();

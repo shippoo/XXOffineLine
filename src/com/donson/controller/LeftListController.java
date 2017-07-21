@@ -129,7 +129,9 @@ public class LeftListController {
 	public static final int RECONNECTNET = 16;
 	// public static final int MARKET = 16;
 	public static final int CONTACTSCHANGE = 17;
-	public static final int PERMISSION = 18;
+	public static final int INSERT_OFFLINE_PARAM = 18;
+	public static final int PERMISSION = 19;
+	
 
 	private void findViewById(View view) {
 		list.add(context.getString(R.string.left_global_change)); // 0
@@ -151,6 +153,7 @@ public class LeftListController {
 		list.add(context.getString(R.string.left_reconnect_net)); // 15+1
 		// list.add(context.getString(R.string.left_market)); //16+1
 		list.add(context.getString(R.string.contacts_change));// 16+1
+		list.add(context.getString(R.string.left_save_offline_param));
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			list.add(context.getString(R.string.left_permisssion));
 		}
@@ -279,6 +282,9 @@ public class LeftListController {
 						context.startActivity(intent);
 						// Toast.makeText(context,context.getString(R.string.need_permission),Toast.LENGTH_SHORT).show();
 					}
+					break;
+				case INSERT_OFFLINE_PARAM:
+					SPrefHookUtil.putSettingBoolean(context, SPrefHookUtil.KEY_SETTING_SAVE_OFFLINE_PARAM, holder.checkBox.isChecked());
 					break;
 				default:
 					//

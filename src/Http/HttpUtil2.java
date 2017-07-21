@@ -32,6 +32,7 @@ import com.donson.myhook.services.ScriptService;
 import com.donson.utils.AppInfosUtil;
 import com.donson.utils.CharacterParser;
 import com.donson.utils.CheckUpdateUtil;
+import com.donson.utils.CommonSprUtil;
 import com.donson.utils.EasyClickUtil;
 import com.donson.utils.MyfileUtil;
 import com.donson.utils.OpenActivityUtil;
@@ -395,9 +396,9 @@ public class HttpUtil2 {
 		}
 		LiuCunMode liuCunMode = null;
 		if(!TextUtils.isEmpty(netTask.getPackageName())){
-			liuCunMode = dao.getLiuCunSetByPackageName(netTask.getPackageName());
+			liuCunMode = dao.getLiuCunSetByPackageName(netTask.getPackageName(),CommonSprUtil.getCurChannel(context));
 		}else {
-			liuCunMode = dao.getLiuCunSetByPackageName(packageName);
+			liuCunMode = dao.getLiuCunSetByPackageName(packageName,CommonSprUtil.getCurChannel(context));
 		}
 		String oldRetained = null;
 		if(liuCunMode!=null){
@@ -444,7 +445,7 @@ public class HttpUtil2 {
 		}
 		String retain = netTask.getRetained().replace(",","_");
 		if(isReSetString(retain, oldRetained)){
-			dao.insertOrReplaceLiuCunSetting(netTask.getPackageName(), retain);
+			dao.insertOrReplaceLiuCunSetting(netTask.getPackageName(),SPrefUtil.C_CHANNEL, retain);
 		}
 		if(isReSetString(netTask.getApkPath(), apkUrl)){
 			SPrefHookUtil.putTaskStr(context, SPrefHookUtil.KEY_TASK_APK_URL, netTask.getApkPath());

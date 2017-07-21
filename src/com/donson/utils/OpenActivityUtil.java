@@ -1,5 +1,8 @@
 package com.donson.utils;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import Xposed.WJVPNHook;
 import android.app.Activity;
 import android.content.Context;
@@ -15,6 +18,7 @@ import com.donson.myhook.ChangeWhiteListActivity;
 import com.donson.myhook.DebugLogActivity;
 import com.donson.myhook.DeleteLogActivity;
 import com.donson.myhook.FileOtpListenActivity;
+import com.donson.myhook.LiuCunAllTableActivity;
 import com.donson.myhook.LiucunActivity;
 import com.donson.myhook.LoginActivity;
 import com.donson.myhook.MainActivity;
@@ -126,14 +130,7 @@ public class OpenActivityUtil {
 //		context.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
 		openActivitySlidNormal(context, ScriptSetActivity.class);
 	}
-	/**
-	 * 开启activity
-	 */
-	public static void openActivitySlidNormal(Activity context,Class<? extends Activity> class1){
-		Intent intent = new Intent(context, class1);
-		context.startActivity(intent);
-		context.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
-	}
+	
 	public static void startMainActivity(Activity context) {
 		Intent intent = new Intent(context, MainActivity.class);
 		context.startActivity(intent);
@@ -282,5 +279,33 @@ public class OpenActivityUtil {
 		openActivitySlidNormal(context, DeleteLogActivity.class);
 	}
 	
+	public static final String TABLETYPE = "TABLE_TYPE";
+	public static final int ALLPARAM_TYPE = 0;
+	public static final int RETAIN_TYPE = 1;
+	/**
+	 * 
+	 * @param context
+	 * @param type
+	 */
+	public static void startLiucunAllTableActivity(Activity context,int type) {
+		Intent intent = new Intent(context, LiuCunAllTableActivity.class);
+		intent.putExtra(TABLETYPE, type);
+		context.startActivity(intent);
+		context.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+	}
+	
+	/**
+	 * 开启activity
+	 */
+	public static void openActivitySlidNormal(Activity context,Class<? extends Activity> class1/*,Map<Object, Object> map*/){
+		Intent intent = new Intent(context, class1);
+//		if(map!=null){
+//			for (Entry<Object, Object> entry:map.entrySet()) {
+//				intent.putExtra(entry.getKey(), entry.getValue());
+//			}
+//		}
+		context.startActivity(intent);
+		context.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+	}
 	
 }

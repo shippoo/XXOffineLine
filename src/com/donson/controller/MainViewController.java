@@ -21,7 +21,6 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.net.VpnService;
 import android.telephony.CellIdentityCdma;
 import android.telephony.CellIdentityGsm;
 import android.telephony.CellIdentityLte;
@@ -35,9 +34,7 @@ import android.telephony.CellLocation;
 import android.telephony.cdma.CdmaCellLocation;
 import android.telephony.gsm.GsmCellLocation;
 import android.text.TextUtils;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.Toast;
 
 import com.donson.config.ConstantsHookConfig;
 import com.donson.config.HttpConstants;
@@ -63,15 +60,15 @@ import com.donson.realparam.utils.TelephonyUtil;
 import com.donson.realparam.utils.WifiUtil;
 import com.donson.utils.AppInfosUtil;
 import com.donson.utils.CmdUtil;
+import com.donson.utils.CommonSprUtil;
 import com.donson.utils.EasyClickUtil;
 import com.donson.utils.InputSetUtil;
+import com.donson.utils.InputSetUtil.InputeEnum;
 import com.donson.utils.MyfileUtil;
 import com.donson.utils.OpenActivityUtil;
 import com.donson.utils.SPrefHookUtil;
-import com.donson.utils.SendBroadCastUtil;
 import com.donson.utils.UtilsVpn;
 import com.donson.utils.VpnUtil;
-import com.donson.utils.InputSetUtil.InputeEnum;
 import com.donson.viewinterface.MainViewInterface;
 import com.donson.xxxiugaiqi.R;
 import com.donson.zhushoubase.BaseApplication;
@@ -80,6 +77,7 @@ import com.google.gson.Gson;
 import com.param.bean.ParamEntity;
 import com.param.config.ConstantsConfig;
 import com.param.config.SPrefUtil;
+import com.param.dao.DbDao;
 import com.param.netInterface.HttpUtil.ResponseListener;
 
 public class MainViewController {
@@ -187,9 +185,9 @@ public class MainViewController {
 					e.printStackTrace();
 				}
 				disConnectVpn();
-				if(uploadParam()){
-					limitContinue();;
-				}
+//				if(uploadParam()){
+					limitContinue();
+//				}
 			}
 		}).start();
 	}
@@ -316,7 +314,6 @@ public class MainViewController {
 		}else {
 			viewInterface.setMyTitleMainThread(mContext.getString(R.string.title_main_pc));
 //			setTopTitle(getString(R.string.title_main_pc));
-			
 		}
 		
 		if(!handleLimit())
@@ -437,8 +434,19 @@ public class MainViewController {
 						}).create();
 		dialog.show();
 	}
+	/**
+	 * 当前监听包名
+	 * @return
+	 */
 	public String getListenPackageName(){
 		return SPrefHookUtil.getSettingStr(mContext,SPrefHookUtil.KEY_HHOOK_PACKAGE_NAME);
+	}
+	/**
+	 * 当前任务的渠道号
+	 * @return
+	 */
+	public String getCurChannel(){
+		return SPrefUtil.getString(mContext,SPrefUtil.C_CHANNEL,SPrefUtil.D_CHANNEL);
 	}
 	public String getCurListenPackageName(){
 		return SPrefHookUtil.getCurTaskStr(mContext,SPrefHookUtil.KEY_CUR_PACKAGE_NAME);
@@ -469,7 +477,7 @@ public class MainViewController {
 		Gson gson =new Gson();
 		ParamEntity paramEntity = gson.fromJson(info, ParamEntity.class);
 		Logger.i(paramEntity.toString());
-		SPrefHookUtil.putSettingInt(mContext, SPrefHookUtil.KEY_SETTING_WIFI_STATE,paramEntity.getWifiState());
+		SPrefHookUtil.putSettingInt(mContext, SPrefHookUtil.KEY_SETTING_NET_TYPE,paramEntity.getNetInfoType());
 		if(save){
 			paramEntity.setGeneration_time(System.currentTimeMillis());
 			paramEntity.setTask_id(SPrefHookUtil.getTaskInt(mContext, SPrefHookUtil.KEY_TASK_TASK_ID,SPrefHookUtil.D_TASK_TASK_ID));
@@ -478,10 +486,26 @@ public class MainViewController {
 		//不会上传时间
 //			recordCount(save,paramEntity.getTask_id(),paramEntity.getGeneration_time(),info);
 			SPrefHookUtil.putHookStr(mContext,info, SPrefHookUtil.KEY_HOOK);
+			if(SPrefHookUtil.getSettingBoolean(mContext, SPrefHookUtil.KEY_SETTING_SAVE_OFFLINE_PARAM, SPrefHookUtil.D_SETTING_SAVE_OFFLINE_PARAM)){
+				saveParamToDB(info);
+			}
 			openApk();
 		}else {
 			SPrefHookUtil.putHookStr(mContext,info, SPrefHookUtil.KEY_HOOK);
 		}
+	}
+	/**
+	 * 保存数据的到数据库
+	 * @param info
+	 */
+	private void saveParamToDB(String info) {
+		DbDao dao = DbDao.getInstance(mContext);
+		String packageName = CommonSprUtil.getListenPackageName(mContext);
+		String channel = CommonSprUtil.getCurChannel(mContext);
+		dao.insertOrReplaceParamWithChannel(packageName, channel, info,
+				dao.getLiuCunSetByPackageName(packageName, channel).getPercentStr(),System.currentTimeMillis());
+		int curCount = SPrefHookUtil.getTaskInt(mContext, SPrefHookUtil.KEY_TASK_CUR_RUN_TIME, SPrefHookUtil.D_TASK_CUR_RUN_TIME);
+		SPrefHookUtil.putTaskInt(mContext, SPrefHookUtil.KEY_TASK_CUR_RUN_TIME, curCount+1);
 	}
 	public void openApk() {
 		if(EasyClickUtil.getMarketHookFlag(mContext)){
